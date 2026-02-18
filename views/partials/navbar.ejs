@@ -1,24 +1,31 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">YelpCamp</a>
+<nav class="navbar navbar-expand-lg navbar-light yc-navbar">
+    <a class="navbar-brand" href="/">🏕 YelpCamp</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link " href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="/campgrounds">Campgrounds</a>
-            <a class="nav-item nav-link" href="/campgrounds/new">New campground</a>
-
+            <a class="nav-item nav-link" href="/campgrounds/new">New Campground</a>
         </div>
-        <div class="navbar-nav ml-auto">
-            <% if (!currentUser){ %>
-                <a class=" nav-item nav-link" href="/login">Login</a>
-                <a class=" nav-item nav-link" href="/register">Register</a>
-                <% }else { %>
-                    <a class=" nav-item nav-link" href="/logout">Logout</a>
+        <div class="navbar-nav ml-auto align-items-center">
+            <% if (typeof currentUser==='undefined' || !currentUser){ %>
+                <a class="yc-btn-login mr-2" href="/login">Login</a>
+                <a class="yc-btn-register" href="/register">Register</a>
+                <% } else { %>
+                    <a class="nav-item nav-link d-flex align-items-center" href="/users/<%= currentUser._id %>"
+                        style="gap:8px;">
+                        <span class="yc-avatar">
+                            <%= currentUser.username.charAt(0).toUpperCase() %>
+                        </span>
+                        <span>
+                            <%= currentUser.username %>
+                        </span>
+                    </a>
+                    <a class="yc-logout-link" href="/logout">Logout</a>
                     <% } %>
-
         </div>
     </div>
 </nav>

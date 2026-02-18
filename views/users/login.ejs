@@ -1,20 +1,43 @@
 <% layout('layouts/boilerplate')%>
-    <h1>LOGIN</h1>
-    <form action="/login" method="post" class="validated-form" novalidate>
-        <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" class="form-control" name="username" required>
-            <div class="valid-feedback">looks good!</div>
+
+    <div class="yc-auth-row row no-gutters">
+        <div class="col-md-6 yc-auth-left d-none d-md-flex">
+            <h1>Welcome Back,<br>Explorer.</h1>
+            <p class="auth-sub">Sign in to discover new campgrounds, leave reviews, and connect with fellow outdoor
+                enthusiasts.</p>
+            <div class="auth-quote">
+                "In every walk with nature, one receives far more than he seeks." — John Muir
+            </div>
+            <span class="auth-deco">🏔</span>
         </div>
-        <!-- <div class="mb-3">
-            <label for="eamil" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" name="email" required>
-            <div class="valid-feedback">looks good!</div>
-        </div> -->
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" class="form-control" name="password" required>
-            <div class="valid-feedback">looks good!</div>
+        <div class="col-md-6 yc-auth-right">
+            <h2>Sign In</h2>
+            <p class="auth-form-sub">Sign in to your account</p>
+            <form action="/login" method="post" class="validated-form" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" name="username" required
+                        placeholder="Enter your username">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" name="password" required
+                        placeholder="Enter your password">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <button class="btn-auth-submit mt-2" type="submit">Sign In</button>
+            </form>
+            <p class="yc-auth-switch">Don't have an account? <a href="/register">Register</a></p>
+            <div class="yc-social-proof">
+                <div class="avatar-row">
+                    <span class="mini-avatar" style="background:#2D6A4F;">A</span>
+                    <span class="mini-avatar" style="background:#E76F51;">J</span>
+                    <span class="mini-avatar" style="background:#F4A261;">M</span>
+                    <span class="mini-avatar" style="background:#52B788;">R</span>
+                    <span class="mini-avatar" style="background:#1B4332;">T</span>
+                </div>
+                Join 500+ outdoor enthusiasts
+            </div>
         </div>
-        <button class="btn btn-success">login</button>
-    </form>
+    </div>

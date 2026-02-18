@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
-const Review = require('./review')
+const mongoosePaginate = require('mongoose-paginate-v2');
+const Review = require('./review');
 const User = require('../models/user');
+const { cloudinary } = require('../cloudinary');
 const Schema = mongoose.Schema;
 const ImageSchema=new Schema(  {
     url: String,
@@ -43,11 +45,12 @@ const CampgroundSchema = new Schema({
 
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
-        await Review.deleteMany({
-            _id: {
-                $in: doc.reviews
-            }
-        })
+        if (doc.images && doc.images.length > 0) {
+            const publicIds = doc.images.map(img => img.filename);
+            await cloudinary.api.delete_resources(publicIds);
+        }
+        await Review.deleteMany({ _id: { $in: doc.reviews } });
     }
-})
+});
+CampgroundSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('Campground', CampgroundSchema);

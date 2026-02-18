@@ -18,5 +18,6 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
 //     res.redirect('/campgrounds');
 // })
 router.get('/logout', users.logout);
+router.get('/users/:id', catchAsync(users.showProfile));
 
 module.exports = router;

@@ -1,0 +1,36 @@
+---
+description: Security requirements for YelpCamp
+globs:
+alwaysApply: true
+---
+
+# Security Rules
+
+## Never
+
+- Commit secrets, API keys, or `.env` files
+- Remove auth middleware from mutating routes
+- Trust client-side authorization checks
+- Log passwords, session tokens, or API secrets
+- Run seed scripts against production databases
+
+## Always
+
+- Validate input with Joi (`schemas.js`) server-side
+- Use ownership middleware for edit/delete operations
+- Escape user content before embedding in HTML (especially map popups)
+- Run `npm audit` when adding dependencies
+
+## Known Critical Issue
+
+`cloudinary-onboarding.js` has hardcoded credentials. Rotate before deleting.
+
+## Required for Production (not yet all implemented)
+
+- Helmet security headers
+- express-rate-limit on auth routes
+- express-mongo-sanitize
+- CSRF tokens on forms
+- SESSION_SECRET required in all non-test environments
+
+Reference: `docs/security/SECURITY_AUDIT.md`

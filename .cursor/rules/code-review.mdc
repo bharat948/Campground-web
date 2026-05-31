@@ -1,0 +1,40 @@
+---
+description: Code review standards for YelpCamp
+globs:
+alwaysApply: false
+---
+
+# Code Review Rules
+
+## Blocking Issues (Must Fix)
+
+- Missing auth middleware on mutating routes
+- Secrets or credentials in code
+- Unvalidated user input
+- Unescaped user content in HTML/JS output
+- Failing tests
+- Missing tests for new routes
+
+## Review Checklist
+
+- [ ] `catchAsync` on async handlers
+- [ ] Joi validation for form data
+- [ ] Authorization middleware for protected actions
+- [ ] Flash messages on success/error
+- [ ] No unused imports or commented-out code
+- [ ] Docs updated if behavior changed
+- [ ] `npm test` passes
+
+## Feedback Levels
+
+- **Nit:** Optional style (prefix "Nit:")
+- **Suggestion:** Worth considering
+- **Blocking:** Must fix (security, bugs, missing tests)
+
+## Conventions
+
+- CommonJS, not ES modules
+- POST-Redirect-GET pattern
+- Imperative commit messages
+
+Reference: `docs/standards/CODE_REVIEW_GUIDE.md`

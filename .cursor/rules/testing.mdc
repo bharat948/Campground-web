@@ -1,0 +1,44 @@
+---
+description: Testing requirements for YelpCamp
+globs:
+  - "tests/**"
+  - "controllers/**"
+  - "routes/**"
+alwaysApply: false
+---
+
+# Testing Rules
+
+## Commands
+
+```bash
+npm test           # Full suite (28 tests)
+npm run test:watch # Watch mode
+```
+
+## Requirements for New Code
+
+- New routes MUST have integration tests in `tests/`
+- Test authorization denial paths, not just happy paths
+- Use `request.agent(app)` for session-aware tests
+- Mock Mapbox and Cloudinary — never call real APIs in CI
+
+## Test Structure
+
+```javascript
+const request = require('supertest');
+const app = require('../app');
+
+describe('Feature', () => {
+    test('description', async () => {
+        const res = await request(app).get('/path');
+        expect(res.statusCode).toBe(200);
+    });
+});
+```
+
+## Before Completing Any Task
+
+Run `npm test` and confirm all tests pass.
+
+Reference: `docs/testing/TESTING_AUDIT.md`, `docs/standards/TESTING_GUIDE.md`

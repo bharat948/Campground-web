@@ -7,13 +7,9 @@ module.exports.index = async (req, res) => {
     const { page = 1, search = '' } = req.query;
     const perPage = 8;
 
-    const query = search
-        ? {
-            $or: [
-                { title: { $regex: search, $options: 'i' } },
-                { location: { $regex: search, $options: 'i' } }
-            ]
-        }
+    const trimmedSearch = search.trim();
+    const query = trimmedSearch
+        ? { $text: { $search: trimmedSearch } }
         : {};
 
     const options = {
@@ -23,9 +19,10 @@ module.exports.index = async (req, res) => {
 
     const result = await Campground.paginate(query, options);
 
+    const mapCampgrounds = await Campground.find(query).select('title location geometry');
     const campgroundsGeoJSON = {
         type: 'FeatureCollection',
-        features: result.docs
+        features: mapCampgrounds
             .filter(camp => camp.geometry && camp.geometry.coordinates)
             .map(camp => ({
                 type: 'Feature',
@@ -80,9 +77,10 @@ module.exports.createCampground = async (req, res, next) => {
 module.exports.showCampground = async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate({
         path: 'reviews',
-        populate: {
-            path: 'author'
-        }
+        populate: [
+            { path: 'author' },
+            { path: 'replies.author' }
+        ]
     }).populate('author');
     if (!campground) {
         req.flash('error', 'cannot find that campground');

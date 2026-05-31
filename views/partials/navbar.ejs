@@ -15,6 +15,47 @@
                 <a class="yc-btn-login mr-2" href="/login">Login</a>
                 <a class="yc-btn-register" href="/register">Register</a>
                 <% } else { %>
+                    <div class="nav-item dropdown yc-notifications-dropdown">
+                        <a class="nav-link yc-notifications-toggle dropdown-toggle" href="#" id="notificationsDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="yc-notifications-bell" aria-hidden="true">🔔</span>
+                            <% if (typeof unreadCount !== 'undefined' && unreadCount > 0) { %>
+                                <span class="yc-notifications-badge"><%= unreadCount %></span>
+                            <% } %>
+                            <span class="sr-only">Notifications</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right yc-notifications-menu"
+                            aria-labelledby="notificationsDropdown">
+                            <h6 class="dropdown-header">Notifications</h6>
+                            <% const notifs = (typeof notifications !== 'undefined' && notifications) ? notifications : []; %>
+                            <% if (notifs.length === 0) { %>
+                                <span class="dropdown-item-text yc-notifications-empty">No notifications yet</span>
+                            <% } else { %>
+                                <% for (let notif of notifs) { %>
+                                    <form action="/notifications/<%= notif._id %>/read" method="post"
+                                        class="yc-notification-item-form">
+                                        <%- include('csrf') %>                                        <button type="submit"
+                                            class="dropdown-item yc-notification-item <%= notif.read ? '' : 'yc-notification-unread' %>">
+                                            <span class="yc-notification-message">
+                                                <strong><%= notif.actor.username %></strong>
+                                                <%= notif.type === 'like' ? ' liked your review' : ' replied to your review' %>
+                                            </span>
+                                            <span class="yc-notification-camp"><%= notif.campground.title %></span>
+                                            <span class="yc-notification-time">
+                                                <%= notif.createdAt ? new Date(notif.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '' %>
+                                            </span>
+                                        </button>
+                                    </form>
+                                <% } %>
+                            <% } %>
+                            <% if (typeof unreadCount !== 'undefined' && unreadCount > 0) { %>
+                                <div class="dropdown-divider"></div>
+                                <form action="/notifications/read-all" method="post" class="yc-mark-all-read-form">
+                                    <%- include('csrf') %>                                    <button type="submit" class="dropdown-item yc-mark-all-read">Mark all as read</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
                     <a class="nav-item nav-link d-flex align-items-center" href="/users/<%= currentUser._id %>"
                         style="gap:8px;">
                         <span class="yc-avatar">

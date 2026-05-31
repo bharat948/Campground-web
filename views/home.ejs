@@ -14,16 +14,16 @@
         <div class="scroll-indicator">▼</div>
         <div class="yc-hero-stats">
             <div class="stat-item">
-                <span class="stat-value">50+</span>
+                <span class="stat-value"><%= stats.campgroundCount %><%= stats.campgroundCount >= 50 ? '+' : '' %></span>
                 <span class="stat-label">Campgrounds</span>
             </div>
             <div class="stat-item">
-                <span class="stat-value">100%</span>
-                <span class="stat-label">Authentic Reviews</span>
+                <span class="stat-value"><%= stats.reviewCount %></span>
+                <span class="stat-label">Reviews</span>
             </div>
             <div class="stat-item">
-                <span class="stat-value">Free</span>
-                <span class="stat-label">To Join</span>
+                <span class="stat-value"><%= stats.userCount %><%= stats.userCount >= 10 ? '+' : '' %></span>
+                <span class="stat-label">Members</span>
             </div>
         </div>
     </section>

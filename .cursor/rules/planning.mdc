@@ -1,0 +1,27 @@
+---
+description: Planning and task decomposition for YelpCamp
+globs:
+alwaysApply: true
+---
+
+# Planning Rules
+
+Before implementing changes in this repository:
+
+1. Read `AGENTS.md` and relevant docs in `docs/`
+2. Identify affected layers: routes, controllers, models, views, tests
+3. Check `docs/audits/CODE_AUDIT.md` for related known issues
+4. Define success criteria: what test proves the change works
+5. Prefer minimal diffs — do not refactor unrelated code
+
+## Scope Control
+
+- Do not add features beyond the request
+- Do not introduce new dependencies without justification
+- Do not add TypeScript, React, or microservices without explicit approval
+
+## Before Claiming Complete
+
+- Run `npm test`
+- Verify no secrets in diff
+- Update docs if architecture or behavior changed

@@ -4,7 +4,7 @@
         <h1 class="yc-form-heading">Add a Campground</h1>
         <div class="yc-form-card card">
             <form action="/campgrounds" method="post" novalidate class="validated-form" enctype="multipart/form-data">
-
+                <%- include('../partials/csrf') %>
                 <div class="yc-form-section">Basic Info</div>
 
                 <div class="mb-3">

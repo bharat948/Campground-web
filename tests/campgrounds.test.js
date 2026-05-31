@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../app');
 const Campground = require('../models/campground');
 const User = require('../models/user');
+const { postWithCsrf, deleteWithCsrf } = require('./helpers/csrf');
 
 let agent;
 let testUser;
@@ -9,14 +10,11 @@ let testCampground;
 
 beforeEach(async () => {
     agent = request.agent(app);
-    await agent
-        .post('/register')
-        .type('form')
-        .send({
-            username: 'campTester',
-            email: 'camp@test.com',
-            password: 'password123'
-        });
+    await postWithCsrf(agent, '/register', {
+        username: 'campTester',
+        email: 'camp@test.com',
+        password: 'password123',
+    });
 
     testUser = await User.findOne({ username: 'campTester' });
     if (!testUser) throw new Error('Test user was not created');
@@ -61,21 +59,19 @@ describe('Campground Routes', () => {
     });
 
     test('DELETE /campgrounds/:id redirects to /campgrounds on success', async () => {
-        const res = await agent
-            .delete(`/campgrounds/${testCampground._id}`)
-            .send();
+        const res = await deleteWithCsrf(agent, `/campgrounds/${testCampground._id}`);
         expect(res.statusCode).toBe(302);
         expect(res.headers.location).toBe('/campgrounds');
     });
 
     test('DELETE /campgrounds/:id by non-author gets denied', async () => {
         const agent2 = request.agent(app);
-        await agent2.post('/register').type('form').send({
+        await postWithCsrf(agent2, '/register', {
             username: 'otherUser',
             email: 'other@test.com',
-            password: 'password123'
+            password: 'password123',
         });
-        const res = await agent2.delete(`/campgrounds/${testCampground._id}`);
+        const res = await deleteWithCsrf(agent2, `/campgrounds/${testCampground._id}`);
         expect(res.statusCode).toBe(302);
         expect(res.headers.location).toContain(testCampground._id.toString());
     });

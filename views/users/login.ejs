@@ -1,4 +1,4 @@
-<% layout('layouts/boilerplate')%>
+<% layout('layouts/auth')%>
 
     <div class="yc-auth-row row no-gutters">
         <div class="col-md-6 yc-auth-left d-none d-md-flex">
@@ -14,7 +14,7 @@
             <h2>Sign In</h2>
             <p class="auth-form-sub">Sign in to your account</p>
             <form action="/login" method="post" class="validated-form" novalidate>
-                <div class="mb-3">
+                <%- include('../partials/csrf') %>                <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" class="form-control" name="username" required
                         placeholder="Enter your username">

@@ -1,0 +1,43 @@
+---
+description: Refactoring guidelines for YelpCamp
+globs:
+  - "controllers/**"
+  - "models/**"
+  - "middleware.js"
+  - "utils/**"
+alwaysApply: false
+---
+
+# Refactoring Rules
+
+## Before Refactoring
+
+1. Ensure all tests pass (`npm test`)
+2. Check `docs/audits/CODE_AUDIT.md` for known smells
+3. Check `docs/roadmaps/TECH_DEBT_ROADMAP.md` for priority
+
+## Principles
+
+- Minimal, focused diffs
+- One concern per PR
+- No drive-by cleanup of unrelated code
+- Match existing code style in each file
+- Remove imports made unused by YOUR changes only
+
+## Safe Refactors
+
+- Extract geocode helper from campground controller
+- Remove unused imports and dead commented code
+- Add database indexes to models
+- Rename `isloggedIn` → `isLoggedIn` (update all references)
+
+## Risky Refactors (Require Tests First)
+
+- Moving Cloudinary cleanup out of model hook
+- Introducing service layer
+- Changing session configuration
+- Modifying cascade delete behavior
+
+## After Refactoring
+
+Run `npm test` and verify no behavior change unless intended.

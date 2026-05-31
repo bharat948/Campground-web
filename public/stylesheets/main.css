@@ -1132,6 +1132,19 @@ a {
     font-size: 0.65rem;
 }
 
+/* Auth layout (login / register) */
+.yc-auth-body main {
+    padding: 0;
+}
+.yc-auth-body .yc-auth-row {
+    margin-top: 0;
+    min-height: calc(100vh - 56px);
+}
+.yc-auth-body .yc-auth-left,
+.yc-auth-body .yc-auth-right {
+    min-height: calc(100vh - 56px);
+}
+
 /* Auth mobile */
 @media (max-width: 767px) {
     .yc-auth-left {

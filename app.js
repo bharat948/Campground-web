@@ -78,8 +78,15 @@ app.use((req, res, next) => {
 app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);
-app.get('/', (req, res) => {
-    res.render('home');
+app.get('/', async (req, res) => {
+    const [campgroundCount, reviewCount, userCount] = await Promise.all([
+        Campground.countDocuments(),
+        Review.countDocuments(),
+        User.countDocuments()
+    ]);
+    res.render('home', {
+        stats: { campgroundCount, reviewCount, userCount }
+    });
 });
 app.get('/home', (req, res) => {
     res.redirect('/');

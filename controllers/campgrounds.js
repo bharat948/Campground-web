@@ -23,9 +23,10 @@ module.exports.index = async (req, res) => {
 
     const result = await Campground.paginate(query, options);
 
+    const mapCampgrounds = await Campground.find(query).select('title location geometry');
     const campgroundsGeoJSON = {
         type: 'FeatureCollection',
-        features: result.docs
+        features: mapCampgrounds
             .filter(camp => camp.geometry && camp.geometry.coordinates)
             .map(camp => ({
                 type: 'Feature',

@@ -1,20 +1,49 @@
 <% layout('layouts/boilerplate')%>
-    <h1>REGISTER</h1>
-    <form action="/register" method="post" class="validated-form" novalidate>
-        <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" class="form-control" name="username" required>
-            <div class="valid-feedback">looks good!</div>
+
+    <div class="yc-auth-row row no-gutters">
+        <div class="col-md-6 yc-auth-left d-none d-md-flex">
+            <h1>Join the<br>Community.</h1>
+            <p class="auth-sub">Create your free account and start sharing your favorite campgrounds with outdoor
+                enthusiasts around the world.</p>
+            <div class="auth-quote">
+                "The mountains are calling, and I must go." — John Muir
+            </div>
+            <span class="auth-deco">🏔</span>
         </div>
-        <div class="mb-3">
-            <label for="eamil" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" name="email" required>
-            <div class="valid-feedback">looks good!</div>
+        <div class="col-md-6 yc-auth-right">
+            <h2>Create Account</h2>
+            <p class="auth-form-sub">Create your free account</p>
+            <form action="/register" method="post" class="validated-form" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" name="username" required
+                        placeholder="Choose a username">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" name="email" required
+                        placeholder="your@email.com">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" name="password" required
+                        placeholder="Create a password">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <button class="btn-auth-submit mt-2" type="submit">Register</button>
+            </form>
+            <p class="yc-auth-switch">Already have an account? <a href="/login">Login</a></p>
+            <div class="yc-social-proof">
+                <div class="avatar-row">
+                    <span class="mini-avatar" style="background:#2D6A4F;">A</span>
+                    <span class="mini-avatar" style="background:#E76F51;">J</span>
+                    <span class="mini-avatar" style="background:#F4A261;">M</span>
+                    <span class="mini-avatar" style="background:#52B788;">R</span>
+                    <span class="mini-avatar" style="background:#1B4332;">T</span>
+                </div>
+                Join 500+ outdoor enthusiasts
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" class="form-control" name="password" required>
-            <div class="valid-feedback">looks good!</div>
-        </div>
-        <button class="btn btn-success">Register</button>
-    </form>
+    </div>

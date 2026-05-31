@@ -1,12 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <h1>HOME!! YELP CAMP</h1>
-</body>
-</html>
+<% layout('layouts/boilerplate') %>
+
+    <section class="yc-hero">
+        <div>
+            <span class="yc-hero-badge">✦ Discover the Outdoors</span>
+            <h1>Find Your Perfect<br>Campground</h1>
+            <p class="hero-subtitle">Explore handpicked campgrounds shared by outdoor enthusiasts worldwide. Read honest
+                reviews and plan your next adventure.</p>
+            <div class="yc-hero-cta">
+                <a class="btn btn-hero-primary" href="/campgrounds">Browse Campgrounds →</a>
+                <a class="btn btn-hero-secondary" href="#features">Learn More</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">▼</div>
+        <div class="yc-hero-stats">
+            <div class="stat-item">
+                <span class="stat-value">50+</span>
+                <span class="stat-label">Campgrounds</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">100%</span>
+                <span class="stat-label">Authentic Reviews</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">Free</span>
+                <span class="stat-label">To Join</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="yc-features" id="features">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="yc-section-heading">Why YelpCamp?</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="yc-feature-card card h-100">
+                        <div class="card-body">
+                            <div class="yc-feature-icon">🏕️</div>
+                            <h5 class="feature-title">Find Campgrounds</h5>
+                            <p class="feature-text">Discover campgrounds shared by explorers across the country. Filter
+                                by location, price, and ratings.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="yc-feature-card card h-100">
+                        <div class="card-body">
+                            <div class="yc-feature-icon">🗺️</div>
+                            <h5 class="feature-title">Interactive Maps</h5>
+                            <p class="feature-text">Interactive maps powered by Mapbox let you explore locations
+                                visually and find campgrounds nearby.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="yc-feature-card card h-100">
+                        <div class="card-body">
+                            <div class="yc-feature-icon">⭐</div>
+                            <h5 class="feature-title">Honest Reviews</h5>
+                            <p class="feature-text">Share your experience and help fellow campers find the best spots
+                                with authentic reviews.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="yc-cta-strip">
+        <h3>Ready to explore?</h3>
+        <a class="btn" href="/campgrounds">View All Campgrounds</a>
+    </div>

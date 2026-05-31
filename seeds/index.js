@@ -1,13 +1,11 @@
-
+require('dotenv').config();
 const mongoose = require('mongoose');
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Campground = require('../models/campground');
-// const { captureRejectionSymbol } = require('events');
 
-mongoose.connect('mongodb+srv://bpatidar754:1236@cluster0.hqmetii.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
-    // useCreateIndex:true,
     useUnifiedTopology: true
 });
 
@@ -23,21 +21,18 @@ const seedDB = async () => {
     for (let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 100) + 10;
-        // console.log(cities[random1000].longitude);
-        const ca = [100,100];
-        // console.log(typeof(coordinates));
-        // console.log(arr);
         const camp = new Campground({
-
             author: '64ba909432bee6b2a26398aa',
             location: `${cities[random1000].city},${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            // image: 'https://source.unsplash.com/collection/483251',
             description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur ipsa, dolor neque ab similique nemo eius molestiae? Optio laborum repudiandae odit reprehenderit possimus voluptate eum aspernatur quidem vero, quaerat aliquam.',
             price,
-            geometry:{
+            geometry: {
                 type: 'Point',
-                // coordinates,
+                coordinates: [
+                    cities[random1000].longitude,
+                    cities[random1000].latitude
+                ]
             },
             images: [
                 {

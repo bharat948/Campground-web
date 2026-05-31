@@ -1,84 +1,79 @@
 <% layout('layouts/boilerplate')%>
-    <div class="row">
-        <h1 class="text-center">Edit campground</h1>
-        <div class="col-6 offset-3">
-            <form action="/campgrounds/<%=campground._id %>?_method=PUT" method="post" novalidate
-                class="validated-form" enctype="multipart/form-data">
+
+    <div class="yc-form-wrapper mt-4 mb-5">
+        <h1 class="yc-form-heading">Edit Campground</h1>
+        <div class="yc-form-card card">
+            <form action="/campgrounds/<%=campground._id %>?_method=PUT" method="post" novalidate class="validated-form"
+                enctype="multipart/form-data">
+
+                <div class="yc-form-section">Basic Info</div>
+
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" name="campground[title]" value="<%=campground.title %>"
                         id="title" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="campground[location]"
                         value="<%=campground.location %>" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
-                <!-- <div class="mb-3">
-                    <label  class="form-label" for="image">ADD images</label>
-                    <input type="file" name="image" id="image" multiple>
 
-                     <label class="form-label" for="image">Image url</label>
-                    <input class="form-control" type="text" id="image" name="campground[image]"
-                        value="<%=campground.image %>" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>-->
+                <div class="yc-form-section">Details</div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="price">Campground price</label>
-
+                    <label class="form-label" for="price">Campground Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="price-label">$</span>
                         <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
                             aria-describedby="price-label" name="campground[price]" value="<%=campground.price %>"
                             required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
+                        <div class="valid-feedback">Looks good!</div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="campground[description]"
-                        required><%=campground.description %></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
+                    <textarea class="form-control" type="text" id="description" name="campground[description]" required
+                        rows="4"><%=campground.description %></textarea>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
-                <div class="mb-3">
-                    <label for="">Add More Images</label>
-                    <div class="form-file custom-file">
-                        <input type="file" name="image" class="form-file-input" id="image" multiple>
-                        <label for="image" class="form-file-label">
-                            <span class="form-file-text custom-file-label">Choose file....</span>
-                            <span class="form-file-button">Browse</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-3">
+
+                <div class="yc-form-section">Images</div>
+
+                <p style="color:var(--color-text-secondary);font-size:0.9rem;">
+                    Currently <strong>
+                        <%= campground.images.length %>
+                    </strong> image(s). Check images below to delete them before uploading new ones.
+                </p>
+                <div class="mb-3 d-flex flex-wrap" style="gap:12px;">
                     <% campground.images.forEach(function (img,i) { %>
-                         <img src="<%=img.thumbnail %>" alt="" class="img-thumbnail">
-                         <div class="form-check-inline">
-                            <input type="checkbox" name="deleteImages[]" id="image-<%= i %>" value="<%=img.filename %>">
-                         </div> 
-                         <label for="">Delete</label>
-     
+                        <div class="text-center">
+                            <img src="<%=img.thumbnail %>" alt="Campground image"
+                                style="border-radius:var(--radius-sm);width:100px;height:70px;object-fit:cover;border:1px solid var(--color-border);">
+                            <div class="form-check mt-1">
+                                <input type="checkbox" class="form-check-input" name="deleteImages[]"
+                                    id="image-<%= i %>" value="<%=img.filename %>">
+                                <label class="form-check-label" for="image-<%= i %>"
+                                    style="font-size:0.78rem;color:var(--color-danger);">Delete</label>
+                            </div>
+                        </div>
                         <% }) %>
                 </div>
+
                 <div class="mb-3">
-                    <button class="btn btn-info">Update Campground</button>
+                    <div class="yc-upload-zone">
+                        <input type="file" name="image" id="imageUpload" multiple>
+                        <div class="upload-label">📎 Click to upload or drag and drop</div>
+                        <div class="upload-hint">JPG, PNG, WEBP up to 2MB each (max 6 images)</div>
+                    </div>
+                </div>
+
+                <div class="mb-3 mt-4">
+                    <button class="yc-form-submit">Save Changes →</button>
                 </div>
             </form>
-            <a href="/campgrounds/<%=campground._id %>">Back to campgrounds</a>
-
+            <a class="yc-form-back" href="/campgrounds/<%=campground._id %>">← Back to campground</a>
         </div>
     </div>

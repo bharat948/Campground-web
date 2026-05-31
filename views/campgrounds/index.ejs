@@ -1,39 +1,88 @@
 <% layout('layouts/boilerplate')%>
-    <h1>all Campgrounds</h1>
-    <div><a href="/campgrounds/new">Add campground</a></div>
-    <% for(let campground of campgrounds) {%>
-        <div class="card" mb-3>
-            <div class="row">
-                <div class="col-md-4">
-                    <%if (campground.images.length) {%>
-                        <img class="img-fluid" alt="" src="<%=campground.images[0].url%>">
 
-                        <%}else{ %>
-                            <div class="img-fluid"
-                                src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fhowtostartanllc.com%2Fimages%2Fbusiness-ideas%2Fbusiness-idea-images%2Fcampground.jpg&tbnid=sdeNlBa6UpJ5aM&vet=12ahUKEwjy1ezEk8iAAxUJm2MGHYmyBVcQMygFegUIARD2AQ..i&imgrefurl=https%3A%2F%2Fhowtostartanllc.com%2Fbusiness-ideas%2Fcampground&docid=m5tIEg6Mqnl2fM&w=696&h=391&q=campgrounds&ved=2ahUKEwjy1ezEk8iAAxUJm2MGHYmyBVcQMygFegUIARD2AQ">
-
-                            </div>
-                            <%} %>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%=campground.title %>
-                        </h5>
-                        <p class="card-text">
-                            <%=campground.description %>
-                        </p>
-                        <p class="card-text">
-                            <small class="text-muted">
-                                <%=campground.location %>
-                            </small>
-                        </p>
-                        <a class="btn btn-primary" href="/campgrounds/<%=campground._id %>">view <%=campground.title %>
-                        </a>
-                    </div>
-
-                </div>
+    <div class="yc-page-hero">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h1>All Campgrounds</h1>
+                <p class="page-hero-sub">Explore handpicked campgrounds across the country.</p>
             </div>
+            <a href="/campgrounds/new" class="btn mt-2 mt-md-0">+ Add Campground</a>
         </div>
+    </div>
 
-        <%} %>
+    <form action="/campgrounds" method="GET" class="yc-search-bar d-flex mb-4 flex-wrap" style="gap:8px;">
+        <input class="form-control mr-2" type="search" name="search" placeholder="Search campgrounds..."
+            value="<%= typeof search !== 'undefined' ? search : '' %>" style="max-width: 340px;"
+            aria-label="Search campgrounds">
+        <button class="btn btn-search" type="submit">Search</button>
+        <% if(typeof search !=='undefined' && search) { %>
+            <a href="/campgrounds" class="btn btn-clear ml-2">Clear</a>
+            <% } %>
+    </form>
+
+    <div id="map" style="width:100%; height:400px;"></div>
+
+    <% if(campgrounds.length===0) { %>
+        <div class="text-center mt-5">
+            <h4>No campgrounds found <%= (typeof search !=='undefined' && search) ? `for "${search}" ` : '' %>
+            </h4>
+            <a href="/campgrounds" class="btn btn-primary mt-2">View All Campgrounds</a>
+        </div>
+        <% } %>
+
+            <div class="row">
+                <% for(let campground of campgrounds) { %>
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="yc-camp-card">
+                            <div class="card-img-wrap">
+                                <% if (campground.images.length) { %>
+                                    <img src="<%= campground.images[0].url %>" alt="<%= campground.title %>">
+                                    <% } else { %>
+                                        <span class="card-img-placeholder">🏕</span>
+                                        <% } %>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="camp-title">
+                                    <%= campground.title %>
+                                </h5>
+                                <p class="camp-location">📍 <%= campground.location %>
+                                </p>
+                                <p class="camp-desc">
+                                    <%= campground.description %>
+                                </p>
+                                <span class="camp-price">$<%= campground.price %>/night</span>
+                                <a class="btn-view" href="/campgrounds/<%= campground._id %>">View Campground</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+
+            <% if(totalPages> 1) { %>
+                <nav aria-label="Campground pagination" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                            <a class="page-link"
+                                href="/campgrounds?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(typeof search !== 'undefined' ? search : '') %>">Previous</a>
+                        </li>
+                        <% for(let i=1; i <=totalPages; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a class="page-link"
+                                    href="/campgrounds?page=<%= i %>&search=<%= encodeURIComponent(typeof search !== 'undefined' ? search : '') %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                                <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                    <a class="page-link"
+                                        href="/campgrounds?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(typeof search !== 'undefined' ? search : '') %>">Next</a>
+                                </li>
+                    </ul>
+                </nav>
+                <% } %>
+
+                    <script>
+                        const mapToken = `<%- process.env.MAPBOX_TOKEN %>`;
+                        const campgrounds = <% - JSON.stringify(campgroundsGeoJSON) %>;
+                    </script>
+                    <script src="/javascripts/clusterMap.js"></script>

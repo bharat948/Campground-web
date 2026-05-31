@@ -1,67 +1,57 @@
 <% layout('layouts/boilerplate')%>
-    <div class="row">
-        <h1 class="text-center">New campground</h1>
-        <div class="col-6 offset-3">
+
+    <div class="yc-form-wrapper mt-4 mb-5">
+        <h1 class="yc-form-heading">Add a Campground</h1>
+        <div class="yc-form-card card">
             <form action="/campgrounds" method="post" novalidate class="validated-form" enctype="multipart/form-data">
+
+                <div class="yc-form-section">Basic Info</div>
+
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" name="campground[title]" id="title" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
+                    <input class="form-control" type="text" name="campground[title]" id="title" required
+                        placeholder="e.g. Sunset Valley Camp">
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
-                    <input class="form-control" type="text" id="location" name="campground[location]" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
+                    <input class="form-control" type="text" id="location" name="campground[location]" required
+                        placeholder="e.g. Yosemite, California">
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
-                <!-- <input type="file" name="image" id="" multiple> -->
-               
-                <!-- <div class="mb-3">
-                    <label class="form-label" for="image">Image url</label>
-                    <input class="form-control" type="text" id="image" name="campground[image]" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                      </div>      
-                
-                </div> -->
-                <div class="mb-3">
-                    <label class="form-label" for="price">Campground price</label>
 
+                <div class="yc-form-section">Details</div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="price">Campground Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="price-label">$</span>
                         <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
                             aria-describedby="price-label" name="campground[price]" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
+                        <div class="valid-feedback">Looks good!</div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="campground[description]"
-                        required></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
+                    <textarea class="form-control" type="text" id="description" name="campground[description]" required
+                        rows="4" placeholder="Tell visitors what makes this campground special..."></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="yc-form-section">Images</div>
+
+                <div class="mb-3">
+                    <div class="yc-upload-zone">
+                        <input type="file" name="image" id="image" multiple>
+                        <div class="upload-label">📎 Click to upload or drag and drop</div>
+                        <div class="upload-hint">JPG, PNG, WEBP up to 2MB each (max 6 images)</div>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="">Upload Images</label>
-                    <div class="form-file custom-file">
-                        <input type="file" name="image" class="form-file-input" id="image" multiple>
-                        <label for="image" class="form-file-label">
-                            <span class="form-file-text custom-file-label">Choose file....</span>
-                            <span class="form-file-button">Browse</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-success">ADD CAMP</button>
+
+                <div class="mb-3 mt-4">
+                    <button class="yc-form-submit">Create Campground →</button>
                 </div>
             </form>
-            <a href="/campgrounds">All campgrounds</a>
-
+            <a class="yc-form-back" href="/campgrounds">← Back to all campgrounds</a>
         </div>
     </div>

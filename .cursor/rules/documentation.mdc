@@ -1,0 +1,33 @@
+---
+description: Documentation standards for YelpCamp
+globs:
+  - "docs/**"
+  - "*.md"
+alwaysApply: false
+---
+
+# Documentation Rules
+
+## When to Update Docs
+
+| Change | Update |
+|--------|--------|
+| New feature | docs/product/, docs/architecture/ |
+| Schema change | docs/architecture/DATABASE.md |
+| Security fix | docs/security/SECURITY_AUDIT.md |
+| New env var | .env.example, AGENTS.md, README.md |
+| Resolved tech debt | docs/roadmaps/TECH_DEBT_ROADMAP.md |
+
+## Standards
+
+- Date-stamp audit documents
+- Include severity and priority for findings
+- Link related docs at bottom of each file
+- Keep AGENTS.md under 200 lines, imperative tone
+- Do not duplicate audit content in README — link instead
+
+## AI Agent Files
+
+Keep synchronized: AGENTS.md, PROJECT_MEMORY.md, CLAUDE.md
+
+Reference: `docs/standards/DOCUMENTATION_GUIDE.md`

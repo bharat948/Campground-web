@@ -30,10 +30,16 @@ const campImages = [
 ];
 
 const ensureSeedUser = async () => {
+    const seedPassword = process.env.SEED_USER_PASSWORD?.trim();
+    if (!seedPassword) {
+        throw new Error(
+            'SEED_USER_PASSWORD is required to run seeds. Set it in .env (local dev only).'
+        );
+    }
     let user = await User.findOne({ username: 'seeduser' });
     if (!user) {
         const newUser = new User({ email: 'seed@yelpcamp.com', username: 'seeduser' });
-        user = await User.register(newUser, 'seedpassword123');
+        user = await User.register(newUser, seedPassword);
         console.log('Created seed user: seeduser');
     }
     return user;

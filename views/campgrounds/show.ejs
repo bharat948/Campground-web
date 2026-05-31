@@ -55,7 +55,7 @@
                     <div class="yc-detail-actions mb-3">
                         <a class="btn btn-info" href="/campgrounds/<%=campground._id %>/edit">Edit</a>
                         <form class="d-inline" action="/campgrounds/<%=campground._id %>?_method=DELETE" method="post">
-                            <button class="btn btn-outline-danger">Delete</button>
+                            <%- include('../partials/csrf') %>                            <button class="btn btn-outline-danger">Delete</button>
                         </form>
                     </div>
                     <% }%>
@@ -74,7 +74,7 @@
                     <h4>Share Your Experience</h4>
                     <form action="/campgrounds/<%= campground._id %>/reviews" method="post" class="validated-form"
                         novalidate>
-                        <div class="mb-3">
+                        <%- include('../partials/csrf') %>                        <div class="mb-3">
                             <fieldset class="starability-basic">
                                 <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1"
                                     checked aria-label="No rating." />
@@ -102,6 +102,9 @@
                 <% }%>
 
                     <% for(let review of campground.reviews){ %>
+                        <% const likes = review.likes || []; %>
+                        <% const isLiked = currentUser && likes.some(likeId => likeId.equals(currentUser._id)); %>
+                        <% const replies = review.replies || []; %>
                         <div class="card yc-review-card">
                             <div class="card-body">
                                 <div class="review-author">
@@ -119,15 +122,69 @@
                                 <p class="review-body">
                                     <%= review.body %>
                                 </p>
-                                <% if( currentUser && review.author.equals(currentUser._id)) {%>
-                                    <div class="text-right">
+                                <div class="yc-review-actions">
+                                    <span class="yc-like-count"><%= likes.length %> <%= likes.length === 1 ? 'like' : 'likes' %></span>
+                                    <% if (currentUser) { %>
+                                        <form
+                                            action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>/like"
+                                            method="post" class="d-inline">
+                                            <%- include('../partials/csrf') %>                                            <button type="submit"
+                                                class="btn btn-sm yc-like-btn <%= isLiked ? 'yc-like-btn-active' : '' %>">
+                                                <%= isLiked ? 'Unlike' : 'Like' %>
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                    <% if( currentUser && review.author.equals(currentUser._id)) {%>
                                         <form
                                             action="/campgrounds/<%=campground._id%>/reviews/<%= review._id %>?_method=DELETE"
                                             method="post" class="d-inline">
-                                            <button class="btn btn-outline-danger btn-delete-review">Delete</button>
+                                            <%- include('../partials/csrf') %>                                            <button class="btn btn-outline-danger btn-sm btn-delete-review">Delete</button>
                                         </form>
-                                    </div>
                                     <% }%>
+                                </div>
+
+                                <% if (replies.length > 0) { %>
+                                    <div class="yc-replies">
+                                        <% for (let reply of replies) { %>
+                                            <div class="yc-reply">
+                                                <div class="yc-reply-header">
+                                                    <span class="yc-avatar" style="width:24px;height:24px;font-size:0.65rem;">
+                                                        <%= reply.author.username.charAt(0).toUpperCase() %>
+                                                    </span>
+                                                    <a href="/users/<%= reply.author._id %>"
+                                                        style="color:var(--color-text-primary);font-weight:500;text-decoration:none;font-size:0.9rem;">
+                                                        <%= reply.author.username %>
+                                                    </a>
+                                                    <span class="yc-reply-date">
+                                                        <%= reply.createdAt ? new Date(reply.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' %>
+                                                    </span>
+                                                </div>
+                                                <p class="yc-reply-body"><%= reply.body %></p>
+                                                <% if (currentUser && reply.author.equals(currentUser._id)) { %>
+                                                    <form
+                                                        action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>/replies/<%= reply._id %>?_method=DELETE"
+                                                        method="post" class="d-inline">
+                                                        <%- include('../partials/csrf') %>                                                        <button class="btn btn-outline-danger btn-sm btn-delete-reply">Delete</button>
+                                                    </form>
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+
+                                <% if (currentUser) { %>
+                                    <form
+                                        action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>/replies"
+                                        method="post" class="yc-reply-form validated-form" novalidate>
+                                        <%- include('../partials/csrf') %>                                        <div class="form-group mb-2">
+                                            <label class="form-label sr-only" for="reply-body-<%= review._id %>">Reply</label>
+                                            <textarea class="form-control form-control-sm" name="reply[body]"
+                                                id="reply-body-<%= review._id %>" rows="2" required
+                                                placeholder="Write a reply..."></textarea>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary">Reply</button>
+                                    </form>
+                                <% } %>
                             </div>
                         </div>
                         <% } %>
@@ -143,7 +200,7 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [lang, lot],
-            zoom: 4
+            zoom: 13
         })
         new mapboxgl.Marker()
             .setLngLat([lang, lot])

@@ -71,9 +71,10 @@ Add 2–3 screenshots here (e.g. home page, campground index with map, campgroun
 
    Edit `.env` with your MongoDB URI, Cloudinary credentials, Mapbox token, and a strong `SESSION_SECRET`.
 
-3. (Optional) Seed the database:
+3. (Optional) Seed the database for local development:
 
    ```bash
+   # Set SEED_USER_PASSWORD in .env first (any strong value; dev only)
    npm run seed
    ```
 
@@ -101,6 +102,18 @@ Set `NODE_ENV=production` and ensure all env vars are set. The app uses `PORT` f
 | `CLOUDINARY_KEY` | Cloudinary API key. |
 | `CLOUDINARY_SECRET` | Cloudinary API secret. |
 | `MAPBOX_TOKEN` | Mapbox public access token for maps. |
+| `SEED_USER_PASSWORD` | Password for the local `seeduser` account when running `npm run seed`. Not used by the running app. |
+
+In **production** (`NODE_ENV=production`), all variables except `SEED_USER_PASSWORD` are required at startup.
+
+## Security
+
+- **Never commit `.env`** — it is listed in `.gitignore`. Use `.env.example` as a template only.
+- **No secrets in source** — Cloudinary, Mapbox, MongoDB, and session signing use environment variables only.
+- **Rotate leaked credentials** — If credentials were ever committed to git, revoke them in the provider dashboard (Cloudinary, Mapbox, Atlas) and issue new keys before deploying.
+- **Session secret** — Use a long random `SESSION_SECRET` in production. Development may omit it (a local-only fallback is used); production startup fails without it.
+- **Mapbox token** — The token is sent to the browser for maps (expected). Restrict it by HTTP referrer URL in the Mapbox dashboard.
+- **Seed script** — `npm run seed` wipes campgrounds and requires `SEED_USER_PASSWORD`; do not run against production databases.
 
 ## Running Tests
 

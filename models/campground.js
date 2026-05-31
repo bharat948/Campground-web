@@ -43,6 +43,10 @@ const CampgroundSchema = new Schema({
     ]
 });
 
+CampgroundSchema.index({ author: 1 });
+CampgroundSchema.index({ geometry: '2dsphere' });
+CampgroundSchema.index({ title: 'text', location: 'text' });
+
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
         if (doc.images && doc.images.length > 0) {

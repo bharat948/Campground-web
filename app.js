@@ -1,6 +1,9 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
+const { validateEnv } = require('./utils/validateEnv');
+validateEnv();
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -20,6 +23,9 @@ const User = require('./models/user');
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+const { csrfProtection, generateCsrfToken, invalidCsrfTokenError } = require('./middleware/csrf');
+const notificationRoutes = require('./routes/notifications');
+const { loadNotifications } = require('./middleware');
 
 if (process.env.NODE_ENV !== 'test') {
     mongoose.connect(process.env.MONGO_URL, {
@@ -40,7 +46,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sessionConfig = {
-    secret: process.env.SESSION_SECRET || 'dev-secret-set-SESSION_SECRET-in-env',
+    secret: process.env.SESSION_SECRET?.trim() || 'dev-only-set-SESSION_SECRET-in-env',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -69,13 +75,21 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    res.locals.csrfToken = generateCsrfToken(req);
+    next();
+});
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
     res.locals.currentUser = req.user ?? null;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 });
+app.use(loadNotifications);
 
 app.use('/', userRoutes);
+app.use('/notifications', notificationRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);
 app.get('/', async (req, res) => {
@@ -96,6 +110,22 @@ app.all('*', (req, res, next) => {
     next(new ExpressError('page not found', 404));
 });
 app.use((err, req, res, next) => {
+    if (err === invalidCsrfTokenError) {
+        req.flash('error', 'Your form has expired. Please try again.');
+        const referer = req.get('Referer');
+        const host = req.get('host');
+        if (referer && host) {
+            try {
+                const refUrl = new URL(referer);
+                if (refUrl.host === host && refUrl.protocol === `${req.protocol}:`) {
+                    return res.redirect(`${refUrl.pathname}${refUrl.search}`);
+                }
+            } catch (_) {
+                // ignore malformed referer
+            }
+        }
+        return res.redirect('/');
+    }
     if (err.code === 'LIMIT_FILE_SIZE') {
         req.flash('error', 'Each image must be under 2MB');
         return res.redirect('back');

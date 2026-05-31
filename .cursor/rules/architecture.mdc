@@ -1,0 +1,41 @@
+---
+description: Architecture constraints for YelpCamp
+globs:
+  - "app.js"
+  - "routes/**"
+  - "controllers/**"
+  - "models/**"
+  - "middleware.js"
+alwaysApply: false
+---
+
+# Architecture Rules
+
+YelpCamp is a monolithic Express SSR app. Maintain this pattern.
+
+## Layer Responsibilities
+
+- **routes/** — HTTP mapping and middleware chains only
+- **controllers/** — Request handling, orchestration, render/redirect
+- **models/** — Mongoose schemas, hooks, indexes
+- **middleware.js** — Cross-cutting auth and validation
+- **schemas.js** — Joi validation (single source of truth)
+- **views/** — Presentation only; no DB queries
+
+## Patterns to Follow
+
+- Async routes wrapped with `catchAsync`
+- Authorization via middleware (`isloggedIn`, `isAuthor`, `isReviewAuthor`)
+- POST → redirect with flash messages
+- External APIs (Mapbox, Cloudinary) called from controllers
+
+## Patterns to Avoid
+
+- Business logic in EJS templates
+- Direct DB queries in routes
+- Skipping middleware for "quick" mutations
+- Loading unbounded collections without pagination
+
+## Reference
+
+See `docs/architecture/ARCHITECTURE.md` for route map and diagrams.

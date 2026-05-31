@@ -15,4 +15,10 @@ module.exports.reviewSchema=Joi.object({
         rating:Joi.number().required(),
         body:Joi.string().required()
     }).required()
-})
+});
+
+module.exports.replySchema = Joi.object({
+    reply: Joi.object({
+        body: Joi.string().required().trim().min(1).max(500)
+    }).required()
+});
